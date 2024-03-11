@@ -262,20 +262,150 @@ public class CLI {
     private void studentDataGainer(DataBase dataBase) {
         init(dataBase);
     }
+
     private void adminHomePage(DataBase dataBase, Scanner scanner) {
-        System.out.println("1:See the courses and implement changes");
-        System.out.println("2:see the info about a specific course and add or remove students");
-        System.out.println("3:exit");
-        String t = scanner.next();
-        switch (t) {
+        System.out.println("1 : show the courses and changes");
+        System.out.println("2 : show the information about each courses and add or remove students");
+        System.out.println("3 : Exit");
+        String txt = scanner.next();
+        switch (txt) {
             case "1" -> adminChangesCourses(dataBase, scanner);
             case "2" -> adminOption2(dataBase, scanner);
             case "3" -> init(dataBase);
             default -> {
-                System.out.println("enter between 1-2-3");
+                System.out.println("write 1 or 2 or 3 please");
                 adminHomePage(dataBase, scanner);
             }
         }
     }
+
+    private void adminChangesCourses(DataBase dataBase, Scanner scanner) {
+        printTheCourses(dataBase, "6");
+        System.out.println("1 : add course");
+        System.out.println("2 : remove a course");
+        System.out.println("3 : add capacity");
+        System.out.println("4 : back");
+        System.out.println("5 : exit");
+        String inputtedSTr = scanner.next();
+        if (inputtedSTr.equals("4") || inputtedSTr.equals("back"))
+            adminHomePage(dataBase, scanner);
+        else if (inputtedSTr.equals("5") || inputtedSTr.equals("exit"))
+            init(dataBase);
+        if (!isNumeric(inputtedSTr)) {
+            System.out.println("choose 1-2-3-4-5");
+            adminChangesCourses(dataBase, scanner);
+        }
+        int temp5 = Integer.parseInt(inputtedSTr);
+        switch (temp5) {
+            case 1 -> adminAddsCourse(dataBase, scanner);
+            case 2 -> adminRemovesCourse(dataBase, scanner);
+            case 3 -> adminAddsCapacity(dataBase, scanner);
+            default -> {
+                System.out.println("choose 1-2-3-4-5");
+                adminChangesCourses(dataBase, scanner);
+            }
+        }
+    }
+
+    private void adminOption2(DataBase dataBase, Scanner scanner) {
+        System.out.println("1:see the courses");
+        System.out.println("Enter the code of the course / write ==> back / write ==> exit");
+        String codeString = scanner.next();
+        if (codeString.equals("back"))
+            adminHomePage(dataBase, scanner);
+        ExitString(dataBase, codeString);
+        if (!isNumeric(codeString)) {
+            System.out.println("write a valid code");
+            adminOption2(dataBase, scanner);
+        }
+        int code = Integer.parseInt(codeString);
+        if (code == 1) {
+            printTheCourses(dataBase, "6");
+            System.out.println("enter the code");
+            code = scanner.nextInt();
+        } else if (!dataBase.coursesCodes.contains(code)) {
+            System.out.println("this is undefined in the system");
+            adminOption2(dataBase, scanner);
+        }
+        int[] info = findInfoOfCourse(dataBase, code);
+        adminChangesStudentsOfACourse(dataBase, info[0], info[1], scanner);
+    }
+
+    private void adminChangesStudentsOfACourse(DataBase dataBase, int college, int i, Scanner scanner) {
+        if (college == 1) {
+            if (dataBase.Math.CollegeCourses.get(i).studentsOfCourse.size() == 0) {
+                System.out.println("the course is empty");
+            }
+            for (int j = 0; j < dataBase.Math.CollegeCourses.get(i).studentsOfCourse.size(); j++) {
+                dataBase.Math.CollegeCourses.get(i).studentsOfCourse.get(j).printInfoStudents();
+            }
+            dataBase.Math.CollegeCourses.get(i).printInfo();
+        } else if (college == 2) {
+            if (dataBase.Physics.CollegeCourses.get(i).studentsOfCourse.size() == 0) {
+                System.out.println("the course is empty");
+            }
+            for (int j = 0; j < dataBase.Physics.CollegeCourses.get(i).studentsOfCourse.size(); j++) {
+                dataBase.Physics.CollegeCourses.get(i).studentsOfCourse.get(j).printInfoStudents();
+            }
+            dataBase.Physics.CollegeCourses.get(i).printInfo();
+        } else if (college == 3) {
+            if (dataBase.Chemistry.CollegeCourses.get(i).studentsOfCourse.size() == 0) {
+                System.out.println("the course doesn't have any students");
+            }
+            for (int j = 0; j < dataBase.Chemistry.CollegeCourses.get(i).studentsOfCourse.size(); j++) {
+                dataBase.Chemistry.CollegeCourses.get(i).studentsOfCourse.get(j).printInfoStudents();
+            }
+            dataBase.Chemistry.CollegeCourses.get(i).printInfo();
+        } else if (college == 4) {
+            if (dataBase.civilEng.CollegeCourses.get(i).studentsOfCourse.size() == 0) {
+                System.out.println("the course doesn't have any students");
+            }
+            for (int j = 0; j < dataBase.civilEng.CollegeCourses.get(i).studentsOfCourse.size(); j++) {
+                dataBase.civilEng.CollegeCourses.get(i).studentsOfCourse.get(j).printInfoStudents();
+            }
+            dataBase.civilEng.CollegeCourses.get(i).printInfo();
+        } else if (college == 5) {
+            if (dataBase.electricalEng.CollegeCourses.get(i).studentsOfCourse.size() == 0) {
+                System.out.println("the course doesn't have any students");
+            }
+            for (int j = 0; j < dataBase.electricalEng.CollegeCourses.get(i).studentsOfCourse.size(); j++) {
+                dataBase.electricalEng.CollegeCourses.get(i).studentsOfCourse.get(j).printInfoStudents();
+            }
+            dataBase.electricalEng.CollegeCourses.get(i).printInfo();
+        }
+        Course course = new Course("", "", 0, 0, 0, "", "", CourseType.Exclusive, dataBase.Math);
+        switch (college) {
+            case 1 -> course = dataBase.Math.CollegeCourses.get(i);
+            case 2 -> course = dataBase.Physics.CollegeCourses.get(i);
+            case 3 -> course = dataBase.Chemistry.CollegeCourses.get(i);
+            case 4 -> course = dataBase.civilEng.CollegeCourses.get(i);
+            case 5 -> course = dataBase.electricalEng.CollegeCourses.get(i);
+            default -> adminHomePage(dataBase, scanner);
+        }
+        System.out.println("Enter the student code in order to add or remove / write ==> back / ==> exit");
+        String codeString = scanner.next();
+        if (codeString.equals("back"))
+            adminOption2(dataBase, scanner);
+        else if (codeString.equals("exit"))
+            init(dataBase);
+        if (!isNumeric(codeString)) {
+            System.out.println("please enter a valid code!");
+            adminChangesStudentsOfACourse(dataBase, college, i, scanner);
+        }
+        int code = Integer.parseInt(codeString);
+        System.out.println("1:add Student to Course");
+        System.out.println("2:remove Student from Course");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1 -> adminAddStudentToCourse(dataBase, code, course, scanner);
+            case 2 -> adminRemovesStudentFromCourse(dataBase, code, course, scanner);
+            default -> {
+                System.out.println("number is undefined");
+                adminHomePage(dataBase, scanner);
+            }
+        }
+        adminHomePage(dataBase, scanner);
+    }
+
 
 }
