@@ -262,4 +262,20 @@ public class CLI {
     private void studentDataGainer(DataBase dataBase) {
         init(dataBase);
     }
+    private void adminHomePage(DataBase dataBase, Scanner scanner) {
+        System.out.println("1:See the courses and implement changes");
+        System.out.println("2:see the info about a specific course and add or remove students");
+        System.out.println("3:exit");
+        String t = scanner.next();
+        switch (t) {
+            case "1" -> adminChangesCourses(dataBase, scanner);
+            case "2" -> adminOption2(dataBase, scanner);
+            case "3" -> init(dataBase);
+            default -> {
+                System.out.println("enter between 1-2-3");
+                adminHomePage(dataBase, scanner);
+            }
+        }
+    }
+
 }
