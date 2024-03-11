@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Student {
     ArrayList<Course> StudentCourses = new ArrayList<>();
-    int numVahed;
-    int numVahedGeneral;
+    int numberOfUnits;
+    int numberOfGeneralUnits;
     int studentCode;
-    public void printInfoStudents()
-    {
-        System.out.println("num vahed:"+numVahed+" num Vahed General:"+numVahedGeneral+" student Code:"+studentCode);
+
+    public void printInfoStudents() {
+        System.out.println("numberOfUnits : " + numberOfUnits + " numberOfGeneralUnits : " + numberOfGeneralUnits + " student Code:" + studentCode);
     }
 }
