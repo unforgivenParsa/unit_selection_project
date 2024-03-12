@@ -645,7 +645,7 @@ public class CLI {
         System.out.println("7:go back to give the information again");
         System.out.println("8:exit");
         String college = scanner.next();
-        //
+
         switch (college) {
             case "6" -> adminGenerateTheCodeOfNewCourse(dataBase, scanner);
             case "7", "back" -> adminAddingCourseAbility(dataBase, scanner);
@@ -709,7 +709,7 @@ public class CLI {
         System.out.println("2 : go back to give the information again");
         System.out.println("3 : exit");
         String nameTeacher = scanner.next();
-        //
+
         switch (nameTeacher) {
             case "1" -> adminGivesNameOfNewCourse(dataBase, scanner);
             case "back", "2" -> adminAddingCourseAbility(dataBase, scanner);
@@ -742,7 +742,7 @@ public class CLI {
         System.out.println("2 : go back to give the information again");
         System.out.println("3 : exit");
         String size = scanner.next();
-        //
+
         if (size.equals("1"))
             adminGivesCapacityOfNewCourse(dataBase, scanner);
         else if (size.equals("back") || size.equals("2"))
@@ -785,12 +785,12 @@ public class CLI {
 
         System.out.println("please write the course type, either general or exclusive / write ==> back / write ==> exit");
         String type = scanner.next();
-        //
+
         if (type.equals("back"))
             adminAddingCourseAbility(dataBase, scanner);
         else if (type.equals("exit"))
             init(dataBase);
-        ////////
+
         CourseType typeNew;
         typeNew = CourseType.General;
         if (type.equals("Exclusive") || type.equals("exclusive"))
